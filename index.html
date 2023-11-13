@@ -5,44 +5,73 @@
     <title>Jafu.lol</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        canvas {
+        #container {
+            width: 400px;
+            height: 400px;
             border: 1px solid black;
+            position: relative;
+        }
+
+        #dvd {
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0% {
+                top: 0;
+                left: 0;
+            }
+            25% {
+                top: 0;
+                left: 300px;
+            }
+            50% {
+                top: 300px;
+                left: 300px;
+            }
+            75% {
+                top: 300px;
+                left: 0;
+            }
+            100% {
+                top: 0;
+                left: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <canvas id="myCanvas" width="400" height="400"></canvas>
+    <div id="container">
+        <p>This is a test</p>
+        <p id="dvd">DVD</p>
+    </div>
     <script>
-        const canvas = document.getElementById('myCanvas');
-        const ctx = canvas.getContext('2d');
-        let x = canvas.width / 2;
-        let y = canvas.height / 2;
+        const dvd = document.getElementById('dvd');
+        const container = document.getElementById('container');
+        const containerWidth = container.offsetWidth - dvd.offsetWidth;
+        const containerHeight = container.offsetHeight - dvd.offsetHeight;
+        let x = Math.floor(Math.random() * containerWidth);
+        let y = Math.floor(Math.random() * containerHeight);
         let dx = 2;
-        let dy = -2;
-        const ballRadius = 10;
+        let dy = 2;
 
-        function drawBall() {
-            ctx.beginPath();
-            ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-            ctx.fillStyle = 'red';
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBall();
+        function moveDvd() {
             x += dx;
             y += dy;
-            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+            if (x < 0 || x > containerWidth) {
                 dx = -dx;
             }
-            if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+            if (y < 0 || y > containerHeight) {
                 dy = -dy;
             }
+            dvd.style.top = y + 'px';
+            dvd.style.left = x + 'px';
         }
 
-        setInterval(draw, 10);
+        setInterval(moveDvd, 10);
     </script>
 </body>
 </html>
